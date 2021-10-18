@@ -1633,12 +1633,15 @@ class PCPTProcessing(InsituTestProcessing):
                 results = CORRELATIONS[name](**params)
                 for resultkey in outputs:
                     header = outputs[resultkey]
-                    self.data.loc[i, header] = results[resultkey]
+                    if resultkey in results:
+                        self.data.loc[i, header] = results[resultkey]
+                    else:
+                        self.data.loc[i, header] = np.nan
             else:
                 for resultkey in outputs:
                     header = outputs[resultkey]
                     self.data.loc[i, header] = np.nan
-                    
+
         self.data.rename(columns=reverse_dict(PCPT_KEY_MAPPING), inplace=True)
     # endregion
 
